@@ -1,4 +1,4 @@
-package internal
+package transacciones
 
 var Transacciones = []Transaccion{}
 var UltimoId int
