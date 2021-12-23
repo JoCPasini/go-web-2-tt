@@ -1,8 +1,7 @@
 package handler
 
 import (
-	"github.com/JosePasiniMercadolibre/go-web-2-tt/internal/transacciones"
-	"github.com/gin-gonic/gin"
+	"github.com/JosePasiniMercadolibre/internal/transacciones"
 )
 
 type request struct {
@@ -25,6 +24,7 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 	}
 }
 
+/*
 func (t *Transaccion) GetAll() gin.HandlerFunc {
 	return func(ctx gin.Context) {
 		tokem := ctx.Request.Header.Get("tokem")
@@ -45,3 +45,4 @@ func (t *Transaccion) GetAll() gin.HandlerFunc {
 		ctx(200, transacciones)
 	}
 }
+*/

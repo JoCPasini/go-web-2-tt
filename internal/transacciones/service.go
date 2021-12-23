@@ -22,7 +22,7 @@ func (s *service) GetAll() ([]Transaccion, error) {
 }
 
 func (s *service) Store(id int, emisor string, receptor string) ([]Transaccion, error) {
-	
+
 	transacciones, err := s.repository.Store(id, emisor, receptor)
 	if err != nil {
 		return nil, err
