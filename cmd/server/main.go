@@ -1,17 +1,19 @@
 package main
 
 import (
-	"github.com/JosePasiniMercadolibre/cmd/server/handler"
-	"github.com/JosePasiniMercadolibre/internal/transacciones"
+	"github.com/JosePasiniMercadolibre/go-web-2-tt/cmd/server/handler"
+	"github.com/JosePasiniMercadolibre/go-web-2-tt/internal/transacciones"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	repo := transacciones.NewRepository()
 	service := transacciones.NewService(repo)
-	p := handler.NewTransaccion(service)
+	handler := handler.NewTransaccion(service)
 
 	r := gin.Default()
 	pr := r.Group("/transacciones")
-	pr.POST("/")
+	pr.GET("/", handler.GetAll())
+
+	r.Run()
 }
