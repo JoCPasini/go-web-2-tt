@@ -2,7 +2,7 @@ package transacciones
 
 type Service interface {
 	GetAll() ([]Transaccion, error)
-	Store(id int, emisor string, receptor string) (Transaccion, error)
+	Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error)
 }
 
 type service struct {
@@ -21,7 +21,7 @@ func (s *service) GetAll() ([]Transaccion, error) {
 	return transacciones, nil
 }
 
-func (s *service) Store(id int, emisor string, receptor string) (Transaccion, error) {
+func (s *service) Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error) {
 
 	LastId, err := s.repository.LastId()
 	if err != nil {
@@ -29,7 +29,7 @@ func (s *service) Store(id int, emisor string, receptor string) (Transaccion, er
 	}
 	LastId++
 
-	transaccion, err := s.repository.Store(id, emisor, receptor)
+	transaccion, err := s.repository.Store(id, codigoTransaccion, moneda, monto, emisor, receptor, fechaTransaccion)
 	if err != nil {
 		return Transaccion{}, err
 	}

@@ -15,7 +15,7 @@ type Transaccion struct {
 
 type Repository interface {
 	GetAll() ([]Transaccion, error)
-	Store(id int, emisor string, receptor string) (Transaccion, error)
+	Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error)
 	LastId() (int, error)
 }
 
@@ -29,10 +29,10 @@ func (r *repository) GetAll() ([]Transaccion, error) {
 	return transacciones, nil
 }
 
-func (e *repository) Store(id int, emisor string, receptor string) (Transaccion, error) {
-	t1 := Transaccion{id, "C0D1G0-D3-TR4NS4CC!0N", "pesos", 650.0, emisor, receptor, "20-20-2020"}
-	LastId = id
+func (e *repository) Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error) {
+	t1 := Transaccion{id, codigoTransaccion, moneda, monto, emisor, receptor, fechaTransaccion}
 	transacciones = append(transacciones, t1)
+	LastId = t1.Id
 	return t1, nil
 }
 
