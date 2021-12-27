@@ -20,6 +20,8 @@ type Repository interface {
 	Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error)
 	LastId(id int) (int, error)
 	Update(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error)
+	UpdateCodigoMonto(id int, codigoTransaccion string, monto float64) (Transaccion, error)
+	Delete(id int) error
 }
 
 type repository struct{}
@@ -56,8 +58,43 @@ func (e *repository) Update(id int, codigoTransaccion string, moneda string, mon
 		}
 	}
 	if !updated {
-		return Transaccion{}, fmt.Errorf("Producto %d no encontrado", id)
+		return Transaccion{}, fmt.Errorf("Transaccion %d no encontrado", id)
 	}
 	return t, nil
+}
 
+func (e *repository) UpdateCodigoMonto(id int, codigoTransaccion string, monto float64) (Transaccion, error) {
+	var t1 Transaccion
+	updated := false
+
+	for i := range transacciones {
+		if transacciones[i].Id == id {
+			transacciones[i].CodigoTransaccion = codigoTransaccion
+			transacciones[i].Monto = monto
+			updated = true
+			t1 = transacciones[i]
+		}
+	}
+	if !updated {
+		return Transaccion{}, fmt.Errorf("Transaccion %d no encontrado", id)
+	}
+	return t1, nil
+}
+
+func (e *repository) Delete(id int) error {
+	deleted := false
+	var index int
+	for i := range transacciones {
+		if transacciones[i].Id == id {
+			index = i
+			deleted = true
+		}
+	}
+
+	if !deleted {
+		return fmt.Errorf("Transaccion %d no encontrada", id)
+	}
+
+	transacciones = append(transacciones[:index], transacciones[index+1:]...)
+	return nil
 }

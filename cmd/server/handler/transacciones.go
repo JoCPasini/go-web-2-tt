@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/JosePasiniMercadolibre/go-web-2-tt/internal/transacciones"
@@ -100,32 +101,32 @@ func (t *Transaccion) Update() gin.HandlerFunc {
 
 		// Condicional para verificar que el campo no venga vacío
 		if req.CodigoTransaccion == "" {
-			ctx.JSON(400, gin.H{"error": "El codigo del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			ctx.JSON(400, gin.H{"error": "El codigo de la transaccion es requerido, no puede ir un campo vacío, debe modificar todo"})
 			return
 		}
 
 		if req.Moneda == "" {
-			ctx.JSON(400, gin.H{"error": "La moneda del producto es requerida, no puede ir un campo vacío, debe modificar todo"})
+			ctx.JSON(400, gin.H{"error": "La moneda de la transaccion es requerida, no puede ir un campo vacío, debe modificar todo"})
 			return
 		}
 
 		if req.Monto == 0 {
-			ctx.JSON(400, gin.H{"error": "El monto del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			ctx.JSON(400, gin.H{"error": "El monto de la transaccion es requerido, no puede ir un campo vacío, debe modificar todo"})
 			return
 		}
 
 		if req.Emisor == "" {
-			ctx.JSON(400, gin.H{"error": "El emisor del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			ctx.JSON(400, gin.H{"error": "El emisor de la transaccion es requerido, no puede ir un campo vacío, debe modificar todo"})
 			return
 		}
 
 		if req.Receptor == "" {
-			ctx.JSON(400, gin.H{"error": "El receptor del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			ctx.JSON(400, gin.H{"error": "El receptor de la transaccion es requerido, no puede ir un campo vacío, debe modificar todo"})
 			return
 		}
 
 		if req.FechaTransaccion == "" {
-			ctx.JSON(400, gin.H{"error": "La fecha del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			ctx.JSON(400, gin.H{"error": "La fecha de la transaccion es requerido, no puede ir un campo vacío, debe modificar todo"})
 			return
 		}
 
@@ -137,5 +138,75 @@ func (t *Transaccion) Update() gin.HandlerFunc {
 		}
 		ctx.JSON(200, t1)
 
+	}
+}
+
+func (t *Transaccion) UpdateCodigoMonto() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		tokem := ctx.Request.Header.Get("tokem")
+		if tokem != "123456" {
+			ctx.JSON(400, gin.H{
+				"error": "Tokem Inválido",
+			})
+			return
+		}
+
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "id invalido"})
+			return
+		}
+
+		var req request
+
+		if err := ctx.Bind(&req); err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		if req.CodigoTransaccion == "" {
+			ctx.JSON(400, gin.H{"error": "El codigo de la transaccion es requerido, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		if req.Monto == 0 {
+			ctx.JSON(400, gin.H{"error": "El monto de la transaccion es requerido, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		t1, err := t.service.UpdateCodigoMonto(int(id), req.CodigoTransaccion, req.Monto)
+
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "Id no encontrado"})
+		}
+
+		ctx.JSON(200, t1)
+
+	}
+}
+
+func (t *Transaccion) Delete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		tokem := ctx.Request.Header.Get("tokem")
+		if tokem != "123456" {
+			ctx.JSON(400, gin.H{
+				"error": "Tokem Inválido",
+			})
+			return
+		}
+
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		err = t.service.Delete(int(id))
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, gin.H{
+			"data": fmt.Sprintf("La transacción %d ha sido eliminada", id)})
 	}
 }

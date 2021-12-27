@@ -13,8 +13,12 @@ func main() {
 
 	r := gin.Default()
 	pr := r.Group("/transacciones")
-	pr.GET("/getAll", handler.GetAll())
-	pr.POST("/store", handler.Store())
-	pr.PUT("/update/:id", handler.Update())
+	{
+		pr.GET("/getAll", handler.GetAll())
+		pr.POST("/store", handler.Store())
+		pr.PUT("/update/:id", handler.Update())
+		pr.PATCH("/updateCodigoMonto/:id", handler.UpdateCodigoMonto())
+		pr.DELETE("/delete/:id", handler.Delete())
+	}
 	r.Run()
 }
