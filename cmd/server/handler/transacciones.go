@@ -5,18 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/*
-type request struct {
-	Id                int     `json:"id"`
-	CodigoTransaccion string  `json:"codigoTransaccion"`
-	Moneda            string  `json:"moneda"`
-	Monto             float64 `json:"monto"`
-	Emisor            string  `json:"emisor"`
-	Receptor          string  `json:"receptor"`
-	FechaTransaccion  string  `json:"fechaTransaccion`
-}
-*/
-
 type Transaccion struct {
 	service transacciones.Service
 }
@@ -46,4 +34,32 @@ func (t *Transaccion) GetAll() gin.HandlerFunc {
 		}
 		ctx.JSON(200, transacciones)
 	}
+}
+
+func (t *Transaccion) Store() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		tokem := ctx.Request.Header.Get("tokem")
+		if tokem != "123456" {
+			ctx.JSON(400, gin.H{
+				"error": "Tokem Inválido",
+			})
+			return
+		}
+
+		var req request
+
+		if err := ctx.Bind(&req); err != nil {
+			ctx.JSON(404, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+		t, err := t.service.Store(req.Name, req.Emisor, req.Receptor)
+		if err != nil {
+			ctx.JSON(404, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, t)
+	}
+
 }

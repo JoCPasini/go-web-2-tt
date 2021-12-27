@@ -13,7 +13,7 @@ func main() {
 
 	r := gin.Default()
 	pr := r.Group("/transacciones")
-	pr.GET("/", handler.GetAll())
-
+	pr.GET("/getAll", handler.GetAll())
+	pr.POST("/store", handler.Store())
 	r.Run()
 }

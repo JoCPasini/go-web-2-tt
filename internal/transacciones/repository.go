@@ -1,7 +1,7 @@
 package transacciones
 
-var Transacciones = []Transaccion{}
-var UltimoId int
+var transacciones = []Transaccion{}
+var LastId int
 
 type Transaccion struct {
 	Id                int     `json:"id"`
@@ -15,8 +15,8 @@ type Transaccion struct {
 
 type Repository interface {
 	GetAll() ([]Transaccion, error)
-	Store(id int, emisor string, receptor string) ([]Transaccion, error)
-	//LastId() (int, error)
+	Store(id int, emisor string, receptor string) (Transaccion, error)
+	LastId() (int, error)
 }
 
 type repository struct{}
@@ -26,12 +26,16 @@ func NewRepository() Repository {
 }
 
 func (r *repository) GetAll() ([]Transaccion, error) {
-	return Transacciones, nil
+	return transacciones, nil
 }
 
-func (e *repository) Store(id int, emisor string, receptor string) ([]Transaccion, error) {
-	tr1 := Transaccion{id, "C0D1G0-D3-TR4NS4CC!0N", "pesos", 650.0, emisor, receptor, "20-20-2020"}
-	UltimoId = id
-	Transacciones = append(Transacciones, tr1)
-	return Transacciones, nil
+func (e *repository) Store(id int, emisor string, receptor string) (Transaccion, error) {
+	t1 := Transaccion{id, "C0D1G0-D3-TR4NS4CC!0N", "pesos", 650.0, emisor, receptor, "20-20-2020"}
+	LastId = id
+	transacciones = append(transacciones, t1)
+	return t1, nil
+}
+
+func (e *repository) LastId() (int, error) {
+	return LastId, nil
 }
