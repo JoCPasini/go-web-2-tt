@@ -3,6 +3,7 @@ package transacciones
 type Service interface {
 	GetAll() ([]Transaccion, error)
 	Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error)
+	Update(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error)
 }
 
 type service struct {
@@ -23,7 +24,7 @@ func (s *service) GetAll() ([]Transaccion, error) {
 
 func (s *service) Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error) {
 
-	LastId, err := s.repository.LastId()
+	LastId, err := s.repository.LastId(id)
 	if err != nil {
 		return Transaccion{}, err
 	}
@@ -34,4 +35,8 @@ func (s *service) Store(id int, codigoTransaccion string, moneda string, monto f
 		return Transaccion{}, err
 	}
 	return transaccion, nil
+}
+
+func (s *service) Update(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error) {
+	return s.repository.Update(id, codigoTransaccion, moneda, monto, emisor, receptor, fechaTransaccion)
 }

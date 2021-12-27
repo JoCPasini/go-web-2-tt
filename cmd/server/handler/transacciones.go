@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"strconv"
+
 	"github.com/JosePasiniMercadolibre/go-web-2-tt/internal/transacciones"
 	"github.com/gin-gonic/gin"
 )
@@ -70,5 +72,70 @@ func (t *Transaccion) Store() gin.HandlerFunc {
 			return
 		}
 		ctx.JSON(200, t)
+	}
+}
+func (t *Transaccion) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		tokem := ctx.Request.Header.Get("tokem")
+		if tokem != "123456" {
+			ctx.JSON(400, gin.H{
+				"error": "Tokem Inválido",
+			})
+			return
+		}
+
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": "id invalido"})
+			return
+		}
+
+		var req request
+
+		if err := ctx.Bind(&req); err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		// Condicional para verificar que el campo no venga vacío
+		if req.CodigoTransaccion == "" {
+			ctx.JSON(400, gin.H{"error": "El codigo del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		if req.Moneda == "" {
+			ctx.JSON(400, gin.H{"error": "La moneda del producto es requerida, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		if req.Monto == 0 {
+			ctx.JSON(400, gin.H{"error": "El monto del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		if req.Emisor == "" {
+			ctx.JSON(400, gin.H{"error": "El emisor del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		if req.Receptor == "" {
+			ctx.JSON(400, gin.H{"error": "El receptor del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		if req.FechaTransaccion == "" {
+			ctx.JSON(400, gin.H{"error": "La fecha del producto es requerido, no puede ir un campo vacío, debe modificar todo"})
+			return
+		}
+
+		t1, err := t.service.Update(int(id), req.CodigoTransaccion, req.Moneda, req.Monto, req.Emisor, req.Receptor, req.FechaTransaccion)
+
+		if err != nil {
+			ctx.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(200, t1)
+
 	}
 }
