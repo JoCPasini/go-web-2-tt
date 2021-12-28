@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	err := godotenv.Load(".env")
+	err := godotenv.Load()
 	fmt.Println(os.Getenv("TOKEN"))
 	if err != nil {
 		fmt.Print(err.Error())

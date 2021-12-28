@@ -29,22 +29,12 @@ type FileStore struct {
 	FileName string
 }
 
-/*
-func (fs *FileStore) Write(data interface{}) error {
-	fileData, err := json.MarshalIndent(data, "", "  ")
-	if err != nil {
-		return err
-	}
-	return os.WriteFile(fs.FileName, fileData, 0644)
-}
-*/
-
 func (fs *FileStore) Write(data interface{}) (err error) {
 	fileData, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
 		return err
 	}
-	f, err := os.OpenFile(fs.FileName, os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(fs.FileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		return err
 	}
@@ -55,15 +45,6 @@ func (fs *FileStore) Write(data interface{}) (err error) {
 	return nil
 }
 
-/*
-func (fs *FileStore) Read(data interface{}) error {
-	file, err := os.ReadFile(fs.FileName)
-	if err != nil {
-		return err
-	}
-	return json.Unmarshal(file, &data)
-}
-*/
 func (fs *FileStore) Read(data interface{}) (err error) {
 	file, err := os.ReadFile(fs.FileName)
 	if err != nil {

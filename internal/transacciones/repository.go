@@ -11,7 +11,7 @@ var transacciones = []Transaccion{}
 var LastId int
 */
 
-var trans []Transaccion
+//var trans []Transaccion
 
 type Transaccion struct {
 	Id                int     `json:"id"`
@@ -74,7 +74,7 @@ func (r *repository) LastId() (int, error) {
 
 func (r *repository) Update(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error) {
 
-	//var trans []Transaccion
+	var trans []Transaccion
 
 	t := Transaccion{CodigoTransaccion: codigoTransaccion, Moneda: moneda, Monto: monto, Emisor: emisor, Receptor: receptor, FechaTransaccion: fechaTransaccion}
 	r.db.Read(&trans)
@@ -99,7 +99,7 @@ func (r *repository) Update(id int, codigoTransaccion string, moneda string, mon
 
 func (r *repository) UpdateCodigoMonto(id int, codigoTransaccion string, monto float64) (Transaccion, error) {
 	var t1 Transaccion
-	//var transacciones []Transaccion
+	var trans []Transaccion
 	r.db.Read(&trans)
 	updated := false
 
@@ -121,12 +121,12 @@ func (r *repository) UpdateCodigoMonto(id int, codigoTransaccion string, monto f
 }
 
 func (r *repository) Delete(id int) error {
-	var transacciones []Transaccion
-	r.db.Read(&transacciones)
+	var trans []Transaccion
+	r.db.Read(&trans)
 	deleted := false
 	var index int
-	for i := range transacciones {
-		if transacciones[i].Id == id {
+	for i := range trans {
+		if trans[i].Id == id {
 			index = i
 			deleted = true
 		}
@@ -136,8 +136,8 @@ func (r *repository) Delete(id int) error {
 		return fmt.Errorf("Transaccion %d no encontrada", id)
 	}
 
-	transacciones = append(transacciones[:index], transacciones[index+1:]...)
-	if err := r.db.Write(transacciones); err != nil {
+	trans = append(trans[:index], trans[index+1:]...)
+	if err := r.db.Write(trans); err != nil {
 		return err
 	}
 	return nil

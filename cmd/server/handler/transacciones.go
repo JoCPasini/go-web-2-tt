@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/JosePasiniMercadolibre/go-web-2-tt/internal/transacciones"
@@ -148,14 +147,15 @@ func (t *Transaccion) Update() gin.HandlerFunc {
 
 func (t *Transaccion) UpdateCodigoMonto() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokem := ctx.Request.Header.Get("token")
-		if tokem != os.Getenv("TOKEN") {
-			ctx.JSON(400, gin.H{
-				"error": "Token Inválido",
-			})
-			return
-		}
-
+		/*
+			tokem := ctx.Request.Header.Get("token")
+			if tokem != os.Getenv("TOKEN") {
+				ctx.JSON(400, gin.H{
+					"error": "Token Inválido",
+				})
+				return
+			}
+		*/
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if err != nil {
@@ -193,14 +193,15 @@ func (t *Transaccion) UpdateCodigoMonto() gin.HandlerFunc {
 
 func (t *Transaccion) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokem := ctx.Request.Header.Get("token")
-		if tokem != os.Getenv("TOKEN") {
-			ctx.JSON(400, gin.H{
-				"error": "Token Inválido",
-			})
-			return
-		}
-
+		/*
+			tokem := ctx.Request.Header.Get("token")
+			if tokem != os.Getenv("TOKEN") {
+				ctx.JSON(400, gin.H{
+					"error": "Token Inválido",
+				})
+				return
+			}
+		*/
 		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": err.Error()})
