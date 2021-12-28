@@ -30,6 +30,15 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 	}
 }
 
+// ListTransacciones godoc
+// @Sumary List transacciones
+// @Tags Transacciones
+// @Description get transacciones
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} web.Response
+// @Router /transacciones/getAll [get]
 func (t *Transaccion) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -194,7 +203,7 @@ func (t *Transaccion) Delete() gin.HandlerFunc {
 			ctx.JSON(400, web.NewResponse(400, nil, string(err.Error())))
 			return
 		}
-		ctx.JSON(200, gin.H{
-			"data": fmt.Sprintf("La transacción %d ha sido eliminada", id)})
+
+		ctx.JSON(200, web.NewResponse(200, fmt.Sprintf("Transacción %d eliminada", id), ""))
 	}
 }

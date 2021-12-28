@@ -6,13 +6,6 @@ import (
 	"github.com/JosePasiniMercadolibre/go-web-2-tt/pkg/store"
 )
 
-/*
-var transacciones = []Transaccion{}
-var LastId int
-*/
-
-//var trans []Transaccion
-
 type Transaccion struct {
 	Id                int     `json:"id"`
 	CodigoTransaccion string  `json:"codigoTransaccion"`

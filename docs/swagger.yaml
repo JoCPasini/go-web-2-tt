@@ -1,0 +1,38 @@
+definitions:
+  web.Response:
+    properties:
+      code:
+        type: string
+      data: {}
+      error:
+        type: string
+    type: object
+info:
+  contact:
+    name: Jose Pasini
+    url: http://github.com/JosePasiniMercadolibre/go-web-2-tt
+  description: Primer API en Go
+  title: Meli Bootcamp API Go
+  version: "1.0"
+paths:
+  /transacciones/getAll:
+    get:
+      consumes:
+      - application/json
+      description: get transacciones
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.Response'
+      tags:
+      - Transacciones
+swagger: "2.0"
