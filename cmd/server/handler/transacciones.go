@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 
 	"github.com/JosePasiniMercadolibre/go-web-2-tt/internal/transacciones"
@@ -30,13 +31,15 @@ func NewTransaccion(t transacciones.Service) *Transaccion {
 
 func (t *Transaccion) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokem := ctx.Request.Header.Get("tokem")
-		if tokem != "123456" {
-			ctx.JSON(400, gin.H{
-				"error": "Tokem Inválido",
-			})
-			return
-		}
+		/*
+			tokem := ctx.Request.Header.Get("token")
+			if tokem != os.Getenv("TOKEN") {
+				ctx.JSON(400, gin.H{
+					"error": "Token Inválido",
+				})
+				return
+			}
+		*/
 
 		transacciones, err := t.service.GetAll()
 		if err != nil {
@@ -51,14 +54,15 @@ func (t *Transaccion) GetAll() gin.HandlerFunc {
 
 func (t *Transaccion) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokem := ctx.Request.Header.Get("tokem")
-		if tokem != "123456" {
-			ctx.JSON(400, gin.H{
-				"error": "Tokem Inválido",
-			})
-			return
-		}
-
+		/*
+			tokem := ctx.Request.Header.Get("token")
+			if tokem != os.Getenv("TOKEN") {
+				ctx.JSON(400, gin.H{
+					"error": "Token Inválido",
+				})
+				return
+			}
+		*/
 		var req request
 
 		if err := ctx.Bind(&req); err != nil {
@@ -77,15 +81,16 @@ func (t *Transaccion) Store() gin.HandlerFunc {
 }
 func (t *Transaccion) Update() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokem := ctx.Request.Header.Get("tokem")
-		if tokem != "123456" {
-			ctx.JSON(400, gin.H{
-				"error": "Tokem Inválido",
-			})
-			return
-		}
-
-		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		/*
+			tokem := ctx.Request.Header.Get("token")
+			if tokem != os.Getenv("TOKEN") {
+				ctx.JSON(400, gin.H{
+					"error": "Token Inválido",
+				})
+				return
+			}
+		*/
+		idParam, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": "id invalido"})
@@ -130,7 +135,7 @@ func (t *Transaccion) Update() gin.HandlerFunc {
 			return
 		}
 
-		t1, err := t.service.Update(int(id), req.CodigoTransaccion, req.Moneda, req.Monto, req.Emisor, req.Receptor, req.FechaTransaccion)
+		t1, err := t.service.Update(int(idParam), req.CodigoTransaccion, req.Moneda, req.Monto, req.Emisor, req.Receptor, req.FechaTransaccion)
 
 		if err != nil {
 			ctx.JSON(400, gin.H{"error": err.Error()})
@@ -143,10 +148,10 @@ func (t *Transaccion) Update() gin.HandlerFunc {
 
 func (t *Transaccion) UpdateCodigoMonto() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokem := ctx.Request.Header.Get("tokem")
-		if tokem != "123456" {
+		tokem := ctx.Request.Header.Get("token")
+		if tokem != os.Getenv("TOKEN") {
 			ctx.JSON(400, gin.H{
-				"error": "Tokem Inválido",
+				"error": "Token Inválido",
 			})
 			return
 		}
@@ -188,10 +193,10 @@ func (t *Transaccion) UpdateCodigoMonto() gin.HandlerFunc {
 
 func (t *Transaccion) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		tokem := ctx.Request.Header.Get("tokem")
-		if tokem != "123456" {
+		tokem := ctx.Request.Header.Get("token")
+		if tokem != os.Getenv("TOKEN") {
 			ctx.JSON(400, gin.H{
-				"error": "Tokem Inválido",
+				"error": "Token Inválido",
 			})
 			return
 		}

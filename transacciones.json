@@ -1,0 +1,101 @@
+[
+ {
+  "id": 1,
+  "codigoTransaccion": "1010101010",
+  "moneda": "1010101010",
+  "monto": 101010,
+  "emisor": "101010",
+  "receptor": "101010",
+  "FechaTransaccion": "06-06-2026"
+ },
+ {
+  "id": 2,
+  "codigoTransaccion": "111111",
+  "moneda": "111111",
+  "monto": 111,
+  "emisor": "1111",
+  "receptor": "444",
+  "FechaTransaccion": "06-06-2026"
+ },
+ {
+  "id": 3,
+  "codigoTransaccion": "111111",
+  "moneda": "111111",
+  "monto": 111,
+  "emisor": "1111",
+  "receptor": "444",
+  "FechaTransaccion": "06-06-2026"
+ },
+ {
+  "id": 4,
+  "codigoTransaccion": "111111",
+  "moneda": "111111",
+  "monto": 111,
+  "emisor": "1111",
+  "receptor": "444",
+  "FechaTransaccion": "06-06-2026"
+ },
+ {
+  "id": 5,
+  "codigoTransaccion": "5555555",
+  "moneda": "111111",
+  "monto": 111,
+  "emisor": "1111",
+  "receptor": "444",
+  "FechaTransaccion": "06-06-2026"
+ },
+ {
+  "id": 6,
+  "codigoTransaccion": "C0D1G0-D3-TR4NS4CC!0N-5",
+  "moneda": "pesos",
+  "monto": 650,
+  "emisor": "Carlos",
+  "receptor": "Pasini",
+  "FechaTransaccion": "20-20-2020"
+ },
+ {
+  "id": 7,
+  "codigoTransaccion": "7",
+  "moneda": "7",
+  "monto": 111,
+  "emisor": "1111",
+  "receptor": "444",
+  "FechaTransaccion": "06-06-2026"
+ },
+ {
+  "id": 8,
+  "codigoTransaccion": "C0D1G0-D3-TR4NS4CC!0N-77777",
+  "moneda": "pesos",
+  "monto": 650,
+  "emisor": "Carlos",
+  "receptor": "Pasini",
+  "FechaTransaccion": "20-20-2020"
+ },
+ {
+  "id": 9,
+  "codigoTransaccion": "C0D1G0-D3-TR4NS4CC!0N-77777",
+  "moneda": "pesos",
+  "monto": 650,
+  "emisor": "Carlos",
+  "receptor": "Pasini",
+  "FechaTransaccion": "20-20-2020"
+ },
+ {
+  "id": 10,
+  "codigoTransaccion": "C0D1G0-D3-TR4NS4CC!0N-77777",
+  "moneda": "pesos",
+  "monto": 650,
+  "emisor": "Carlos",
+  "receptor": "Pasini",
+  "FechaTransaccion": "20-20-2020"
+ },
+ {
+  "id": 11,
+  "codigoTransaccion": "C0D1G0-D3-TR4NS4CC!0N-77777",
+  "moneda": "pesos",
+  "monto": 650,
+  "emisor": "Carlos",
+  "receptor": "Pasini",
+  "FechaTransaccion": "20-20-2020"
+ }
+]

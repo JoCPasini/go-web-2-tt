@@ -6,23 +6,21 @@ import (
 
 	"github.com/JosePasiniMercadolibre/go-web-2-tt/cmd/server/handler"
 	"github.com/JosePasiniMercadolibre/go-web-2-tt/internal/transacciones"
+	"github.com/JosePasiniMercadolibre/go-web-2-tt/pkg/store"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 
-	//_ = godotenv.Load()
-
-	err := godotenv.Load()
+	err := godotenv.Load(".env")
 	fmt.Println(os.Getenv("TOKEN"))
 	if err != nil {
 		fmt.Print(err.Error())
-	} else {
-		fmt.Println("************************", os.Getenv("TOKEN"))
 	}
 
-	repo := transacciones.NewRepository()
+	db := store.New(store.FileType, "./transacciones.json")
+	repo := transacciones.NewRepository(db)
 	service := transacciones.NewService(repo)
 	handler := handler.NewTransaccion(service)
 
@@ -35,5 +33,7 @@ func main() {
 		pr.PATCH("/updateCodigoMonto/:id", handler.UpdateCodigoMonto())
 		pr.DELETE("/delete/:id", handler.Delete())
 	}
+
 	r.Run()
+
 }
