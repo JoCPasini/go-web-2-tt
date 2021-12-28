@@ -25,5 +25,23 @@
   "emisor": "Carlos",
   "receptor": "Pasini",
   "FechaTransaccion": "20-20-2020"
+ },
+ {
+  "id": 6,
+  "codigoTransaccion": "C0D1G0-D3-TR4NS4CC!0N-77777",
+  "moneda": "pesos",
+  "monto": 650,
+  "emisor": "Carlos",
+  "receptor": "Pasini",
+  "FechaTransaccion": "20-20-2020"
+ },
+ {
+  "id": 7,
+  "codigoTransaccion": "C0D1G0-D3-TR4NS4CC!0N-77777",
+  "moneda": "",
+  "monto": 650,
+  "emisor": "Carlos",
+  "receptor": "Pasini",
+  "FechaTransaccion": "20-20-2020"
  }
 ]
