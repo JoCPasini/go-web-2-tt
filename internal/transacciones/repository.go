@@ -42,7 +42,6 @@ func (r *repository) GetAll() ([]Transaccion, error) {
 }
 
 func (r *repository) Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error) {
-
 	var trans []Transaccion
 	r.db.Read(&trans)
 	t1 := Transaccion{id, codigoTransaccion, moneda, monto, emisor, receptor, fechaTransaccion}
@@ -51,7 +50,6 @@ func (r *repository) Store(id int, codigoTransaccion string, moneda string, mont
 		return Transaccion{}, err
 	}
 	return t1, nil
-
 }
 
 func (r *repository) LastId() (int, error) {
