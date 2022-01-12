@@ -2,7 +2,7 @@ package store
 
 import (
 	"encoding/json"
-	"errors"
+	"io/ioutil"
 	"os"
 )
 
@@ -20,16 +20,37 @@ const (
 func New(store Type, fileName string) Store {
 	switch store {
 	case FileType:
-		return &FileStore{fileName}
+		return &FileStore{
+			FileName: fileName,
+			Mock:     &Mock{},
+		}
 	}
 	return nil
 }
 
 type FileStore struct {
 	FileName string
+	Mock     *Mock
+}
+type Mock struct {
+	Data []byte
+	Err  error
+}
+
+func (fs *FileStore) AddMock(mock *Mock) {
+	fs.Mock = mock
+}
+func (fs *FileStore) ClearMock() {
+	fs.Mock = nil
 }
 
 func (fs *FileStore) Write(data interface{}) (err error) {
+	if fs.Mock != nil {
+		if fs.Mock.Err != nil {
+			return fs.Mock.Err
+		}
+		return json.Unmarshal(fs.Mock.Data, data)
+	}
 	fileData, err := json.MarshalIndent(data, "", " ")
 	if err != nil {
 		return err
@@ -45,16 +66,28 @@ func (fs *FileStore) Write(data interface{}) (err error) {
 	return nil
 }
 
-func (fs *FileStore) Read(data interface{}) (err error) {
-	file, err := os.ReadFile(fs.FileName)
-	if err != nil {
-		if !errors.Is(err, os.ErrNotExist) {
-			return err
+func (fs *FileStore) Read(data interface{}) error {
+	if fs.Mock != nil {
+		if fs.Mock.Err != nil {
+			return fs.Mock.Err
 		}
-		file = []byte("[]")
+		return json.Unmarshal(fs.Mock.Data, data)
 	}
+	file, err := ioutil.ReadFile(fs.FileName)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(file, data)
 
-	err = json.Unmarshal(file, &data)
-
-	return err
+	/*
+		file, err := os.ReadFile(fs.FileName)
+		if err != nil {
+			if !errors.Is(err, os.ErrNotExist) {
+				return err
+			}
+			file = []byte("[]")
+		}
+		err = json.Unmarshal(file, &data)
+		return err
+	*/
 }
