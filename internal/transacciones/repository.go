@@ -13,7 +13,7 @@ type Transaccion struct {
 	Monto             float64 `json:"monto"`
 	Emisor            string  `json:"emisor"`
 	Receptor          string  `json:"receptor"`
-	FechaTransaccion  string  `json:"fechaTransaccion`
+	FechaTransaccion  string  `json:"fechaTransaccion"`
 }
 
 type Repository interface {
@@ -37,13 +37,19 @@ func NewRepository(db store.Store) Repository {
 
 func (r *repository) GetAll() ([]Transaccion, error) {
 	var trans []Transaccion
-	r.db.Read(&trans)
+	err := r.db.Read(&trans)
+	if err != nil {
+		return []Transaccion{}, err
+	}
 	return trans, nil
 }
 
 func (r *repository) Store(id int, codigoTransaccion string, moneda string, monto float64, emisor string, receptor string, fechaTransaccion string) (Transaccion, error) {
 	var trans []Transaccion
-	r.db.Read(&trans)
+	err := r.db.Read(&trans)
+	if err != nil {
+		return Transaccion{}, err
+	}
 	t1 := Transaccion{id, codigoTransaccion, moneda, monto, emisor, receptor, fechaTransaccion}
 	trans = append(trans, t1)
 	if err := r.db.Write(trans); err != nil {
@@ -68,7 +74,11 @@ func (r *repository) Update(id int, codigoTransaccion string, moneda string, mon
 	var trans []Transaccion
 
 	t := Transaccion{CodigoTransaccion: codigoTransaccion, Moneda: moneda, Monto: monto, Emisor: emisor, Receptor: receptor, FechaTransaccion: fechaTransaccion}
-	r.db.Read(&trans)
+	err := r.db.Read(&trans)
+	if err != nil {
+		return Transaccion{}, err
+	}
+
 	updated := false
 
 	for i := range trans {
@@ -91,7 +101,10 @@ func (r *repository) Update(id int, codigoTransaccion string, moneda string, mon
 func (r *repository) UpdateCodigoMonto(id int, codigoTransaccion string, monto float64) (Transaccion, error) {
 	var t1 Transaccion
 	var trans []Transaccion
-	r.db.Read(&trans)
+	err := r.db.Read(&trans)
+	if err != nil {
+		return Transaccion{}, err
+	}
 	updated := false
 
 	for i := range trans {
@@ -113,7 +126,10 @@ func (r *repository) UpdateCodigoMonto(id int, codigoTransaccion string, monto f
 
 func (r *repository) Delete(id int) error {
 	var trans []Transaccion
-	r.db.Read(&trans)
+	err := r.db.Read(&trans)
+	if err != nil {
+		return err
+	}
 	deleted := false
 	var index int
 	for i := range trans {
